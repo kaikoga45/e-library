@@ -30,8 +30,7 @@ class peminjamCont extends Controller
         $judul_buku = $req->inputBuku;
         $dataJumlahBuku = buku::select('jumlah_buku')->where('judul', $judul_buku )->first();
 
-        if($dataJumlahBuku->jumlah_buku > 0){
-            buku::select('jumlah_buku')->where('judul', $judul_buku )->decrement('jumlah_buku');
+            buku::where('judul', $judul_buku )->decrement('jumlah_buku');
 
             $peminjam->anggota = $req->inputAnggota;
             $peminjam->buku = $req->inputBuku;
@@ -42,15 +41,18 @@ class peminjamCont extends Controller
             $peminjam->status = "Belum Dikembalikan";
             $peminjam->terima_oleh = '-';
 
-            $peminjam->save();
-
             $dataJumlahBukuTerbaru = buku::select('jumlah_buku')->where('judul', $judul_buku )->first();
 
             if($dataJumlahBukuTerbaru->jumlah_buku < 1){
                 buku::select('status_buku')->where('judul', $judul_buku )->update(['status_buku'=>'Habis']);
             }
+            
+        if($peminjam->save()){
+            return redirect("/borrowing")->with('statusSuccess', 'Telah berhasil menambahkan data peminjam');
+        }else{
+            return redirect("/borrowing")->with('statusFailed', 'Gagal menambahkan data peminjam');
         }
-        return redirect("/borrowing")->with('addSuccess', 'Telah berhasil menambahkan data peminjam');
+   
     }
 
     public function kembalikanBuku($idPeminjam){
@@ -61,6 +63,7 @@ class peminjamCont extends Controller
 
         $tgl_kembali = date("Y-m-d");
         $tglPinjam = peminjam::select('tanggal_peminjaman')->where('id', $idPeminjam)->first();
+
         $to = \Carbon\Carbon::createFromFormat('Y-m-d', $tgl_kembali);
         $from = \Carbon\Carbon::createFromFormat('Y-m-d', $tglPinjam->tanggal_peminjaman);
         $diff_in_days = $to->diffInDays($from);
@@ -69,10 +72,10 @@ class peminjamCont extends Controller
         $batas_pinjam = 7;
         $denda = 500;
 
-        if($diff_in_days > $satu_minggu){
+        if($diff_in_days > $batas_pinjam){
             $durasiTerlambat = $diff_in_days - $satu_minggu;
             $totalDenda = $durasiTerlambat * $denda;
-            
+
             $peminjam->tanggal_dikembalikan = $tgl_kembali;
             $peminjam->durasi_terlambat = $durasiTerlambat;
             $peminjam->total_denda = $totalDenda;
@@ -80,7 +83,6 @@ class peminjamCont extends Controller
             $peminjam->tanggal_dikembalikan = $tgl_kembali;
             $peminjam->durasi_terlambat = 0;
             $peminjam->total_denda = 0;
-            
         }
         
         $peminjam->status = 'Telah Dikembalikan';
@@ -89,15 +91,17 @@ class peminjamCont extends Controller
 
         $peminjam->terima_oleh = $userLogin->name;
 
-        $peminjam->save();
-
         $dataStatusBuku = buku::select('status_buku')->where('judul', $judul_buku )->first();
 
         if($dataStatusBuku->status_buku == 'Habis'){
             buku::select('status_buku')->where('judul', $judul_buku )->update(['status_buku'=>'Tersedia']);
         }
         
-        return redirect()->back()->with('returnSuccess', 'Telah berhasil memproses data peminjaman');
+        if($peminjam->save()){
+            return redirect()->back()->with('statusSuccess', 'Telah berhasil memproses data peminjaman');
+        }else{
+            return redirect()->back()->with('statusFailed', 'Gagal memproses data peminjaman');
+        }
     }
 
     public function hapusDatapeminjam($id){
@@ -109,11 +113,17 @@ class peminjamCont extends Controller
         if($statusPinjam == 'Belum Dikembalikan'){
             $judul_buku = $idPeminjam->buku;
             buku::select('jumlah_buku')->where('judul', $judul_buku)->increment('jumlah_buku');
-            $idPeminjam->delete();
+            if($idPeminjam->delete()){
+                return redirect()->back()->with('statusSuccess', 'Telah berhasil menghapuskan data peminjaman');
+            }else{
+                return redirect()->back()->with('statusFailed', 'Gagal menghapuskan data peminjaman');
+            }
         }else{
-            $idPeminjam->delete();
-        }
-
-        return redirect()->back()->with('deleteSuccess', 'Telah berhasil menghapuskan data peminjaman');
+            if($idPeminjam->delete()){
+                return redirect()->back()->with('statusSuccess', 'Telah berhasil menghapuskan data peminjaman');
+            }else{
+                return redirect()->back()->with('statusFailed', 'Gagal menghapuskan data peminjaman');
+            }
+        } 
     }
 }

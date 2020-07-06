@@ -92,7 +92,7 @@ Update Buku
                                 @elseif($var_buku->status_buku == "Tidak tersedia")
                                 <option value="Tersedia">Tersedia</option>
                                 @else
-                                <option value="Tidak tersedia">Tidak tersedia</option>
+                                <option value="Tidak tersedia">Tidak tersedih</option>
                                 <option value="Tersedia">Tersedia</option>
                                 @endif
                             </select>
@@ -101,7 +101,7 @@ Update Buku
                     <hr>
                     <div class="clearfix">
                         <div class="pull-right">
-                            <button type="button" class="btn btn-danger">Batal</button>
+                            <a href="/book"><button type="button" class="btn btn-danger">Batal</button></a>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>

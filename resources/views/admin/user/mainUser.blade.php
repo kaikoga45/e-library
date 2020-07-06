@@ -27,6 +27,22 @@ Database Anggota
                             Tambah Anggota
                         </a>
                     </div>
+                    @if (session('statusSuccess'))
+                    <div class="col-md-12 col-sm-12">
+                        <div class="alert alert-success alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>{{ session('statusSuccess') }}!</strong>
+                        </div>
+                    </div>
+                    @endif
+                    @if (session('statusFailed'))
+                    <div class="col-md-12 col-sm-12">
+                        <div class="alert alert-danger alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>{{ session('statusFailed') }}!</strong>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
             <!-- Simple Datatable start -->

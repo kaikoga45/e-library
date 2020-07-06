@@ -27,27 +27,19 @@ Database Buku
                             Tambah buku
                         </a>
                     </div>
-                    @if (session('addSuccess'))
+                    @if (session('statusSuccess'))
                     <div class="col-md-12 col-sm-12">
                         <div class="alert alert-success alert-dismissible">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>{{ session('addSuccess') }}!</strong>
+                            <strong>{{ session('statusSuccess') }}!</strong>
                         </div>
                     </div>
                     @endif
-                    @if (session('deleteSuccess'))
+                    @if (session('statusFailed'))
                     <div class="col-md-12 col-sm-12">
-                        <div class="alert alert-success alert-dismissible">
+                        <div class="alert alert-danger alert-dismissible">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>{{ session('deleteSuccess') }}!</strong>
-                        </div>
-                    </div>
-                    @endif
-                    @if (session('updateSuccess'))
-                    <div class="col-md-12 col-sm-12">
-                        <div class="alert alert-success alert-dismissible">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>{{ session('updateSuccess') }}!</strong>
+                            <strong>{{ session('statusFailed') }}!</strong>
                         </div>
                     </div>
                     @endif
@@ -70,7 +62,6 @@ Database Buku
                                 <th scope="col">Kategori</Th>
                                 <th scope="col">Halaman</th>
                                 <th scope="col">Penerbit</th>
-                                <th scope="col">Halaman</th>
                                 <th scope="col">Jumlah Buku</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Tanggal Diinputkan</th>
@@ -90,7 +81,6 @@ Database Buku
                                 <td>{{$vrb -> kategori}}</td>
                                 <td>{{$vrb -> halaman}}</td>
                                 <td>{{$vrb -> penerbit}}</td>
-                                <td>{{$vrb -> halaman}}</td>
                                 <td>{{$vrb -> jumlah_buku}}</td>
                                 <td>{{$vrb -> status_buku}}</td>
                                 <td>{{$vrb -> waktu_ditambahkan}}</td>

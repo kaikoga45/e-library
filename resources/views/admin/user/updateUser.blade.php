@@ -56,7 +56,7 @@ Update Anggota
                     <hr>
                     <div class="clearfix">
                         <div class="pull-right">
-                            <button type="button" class="btn btn-danger">Batal</button>
+                            <a href="/user"><button type="button" class="btn btn-danger">Batal</button></a>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>

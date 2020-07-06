@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\anggota;
+use App\peminjam;
 
 class userCont extends Controller
 {
@@ -21,16 +22,23 @@ class userCont extends Controller
         $anggota->alamat_tinggal = $req->inputAlamat;
         $anggota->nomor_kontak = $req->inputKontak;
         $anggota->bergabung_sejak = date("Y-m-d");
-        
-        $anggota->save();
-        return redirect("/user");
+
+        if($anggota->save()){
+            return redirect()->back()->with('statusSuccess', 'Telah berhasil menambahkan data anggota');
+        }else{
+            return redirect()->back()->with('statusFailed', 'Gagal menambahkan data anggota');
+        }
 
     }
 
     public function deleteUser($id){
          $idanggota = anggota::find($id);
-         $idanggota->delete();
-         return redirect('/user');
+         
+        if($idanggota->delete()){
+            return redirect()->back()->with('statusSuccess', 'Telah berhasil menghapuskan data anggota');
+        }else{
+            return redirect()->back()->with('statusFailed', 'Gagal menghapuskan data anggota');
+        }
     }
 
     public function viewUpdate($id){
@@ -40,14 +48,27 @@ class userCont extends Controller
     }
 
     public function update($idUser, Request $req){
-        $anggota= anggota::find($idUser);
+        $anggota = anggota::find($idUser);
+
+        $namaAnggota = $anggota->nama;
+        $updateNamaPeminjam = $req->inputNama;
+
+        $cekAnggotaDiPeminjam = peminjam::where('anggota', $namaAnggota)->get();
+
+        $jumlahAnggota = $cekAnggotaDiPeminjam->count();
+
+        if($jumlahAnggota > 0){
+            peminjam::where('anggota', $namaAnggota)->update(['anggota'=>$updateNamaPeminjam]);
+        }
 
         $anggota->nama = $req->inputNama;
         $anggota->alamat_tinggal = $req->inputAlamat;
         $anggota->nomor_kontak = $req->inputKontak;
 
-        $anggota->save();
-
-        return redirect('/user');
+        if($anggota->save()){
+            return redirect('/user')->with('statusSuccess', 'Telah berhasil mengupdate data anggota');
+        }else{
+            return redirect('/user')->with('statusFailed', 'Gagal mengupdate data anggota');
+        }
     }
 }

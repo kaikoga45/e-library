@@ -108,7 +108,7 @@ Dashboard
 							<li>
 								<a href="#">
 									<h3 class="clearfix">{{$vrp->anggota}}</h3>
-									<p>Telah meminjam sebuah buku dengan judul {{$vrp->buku}}</p>
+									<p>Telah meminjam sebuah buku dengan judul "{{$vrp->buku}}"</p>
 								</a>
 							</li>
 							@endif

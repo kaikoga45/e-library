@@ -26,27 +26,19 @@ Databases Peminjam
                             Tambah Peminjam
                         </a>
                     </div>
-                    @if (session('addSuccess'))
+                    @if (session('statusSuccess'))
                     <div class="col-md-12 col-sm-12">
                         <div class="alert alert-success alert-dismissible">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>{{ session('addSuccess') }}!</strong>
+                            <strong>{{ session('statusSuccess') }}!</strong>
                         </div>
                     </div>
                     @endif
-                    @if (session('returnSuccess'))
+                    @if (session('statusFailed'))
                     <div class="col-md-12 col-sm-12">
-                        <div class="alert alert-success alert-dismissible">
+                        <div class="alert alert-danger alert-dismissible">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>{{ session('returnSuccess') }}!</strong>
-                        </div>
-                    </div>
-                    @endif
-                    @if (session('deleteSuccess'))
-                    <div class="col-md-12 col-sm-12">
-                        <div class="alert alert-success alert-dismissible">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>{{ session('deleteSuccess') }}!</strong>
+                            <strong>{{ session('statusFailed') }}!</strong>
                         </div>
                     </div>
                     @endif
@@ -69,7 +61,7 @@ Databases Peminjam
                                 <th scope="col">Tanggal Peminjaman</th>
                                 <th scope="col">Tanggal Dikembalikan</th>
                                 <th scope="col">Durasi Terlambat</th>
-                                <th scope="col">Denda (500 x hari)</th>
+                                <th scope="col">Denda (500 x Durasi Terlambat)</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Diterima Oleh</th>
                                 <th class="datatable-nosort">Aksi</th>

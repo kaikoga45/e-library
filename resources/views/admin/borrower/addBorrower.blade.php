@@ -70,7 +70,6 @@ Databases Peminjam
                             @else
                             <option disabled>{{$vrb->judul}} [Buku Habis atau Tidak Tersedia]</option>
                             @endif
-
                             @endforeach
                         </select>
                     </div>
